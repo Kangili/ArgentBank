@@ -1,0 +1,11 @@
+IL FAUT QUE JE TRAVAILLE MON CODE DANS LE FRONDEND 
+
+(pour lancer ton serveur backend, souvent avec nodemon ou autre)
+cd Backend
+npm run dev:server
+
+et dans un autre terminal 
+cd Frondend/argentbank
+npm start
+
+(pour lancer ton app React avec React Router et tout le frontend)
