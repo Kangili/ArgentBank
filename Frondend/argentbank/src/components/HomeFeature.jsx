@@ -9,11 +9,17 @@ import React from "react";
  */
 function HomeFeature({ img, title, text }) {
   return (
-    <div className="feature-item" style={{ textAlign: "center", margin: "20px" }}>
-      <img src={img} alt={title} style={{ width: "80px", marginBottom: "10px" }} />
-      <h3>{title}</h3>
-      <p>{text}</p>
-    </div>
+    <div className="feature-item">
+          <img
+            src={img}
+            alt="Chat Icon"
+            className="feature-icon"
+          />
+          <h3 className="feature-item-title">{title}</h3>
+          <p>
+            {text}
+          </p>
+        </div>
   );
 }
 

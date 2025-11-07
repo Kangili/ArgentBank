@@ -5,7 +5,41 @@ cd Backend
 npm run dev:server
 
 et dans un autre terminal 
-cd Frondend/argentbank
+cd Frondend
+cd argentbank
 npm start
 
 (pour lancer ton app React avec React Router et tout le frontend)
+
+
+j'ai un dossier compenents avec footer, header et homefeature un dossier pages avec error404, home, profile, signin un dossier store avec store, user et un dossier assets un dossier css dedans main.css et un dossier icons avec les images et dans src il y a app et index
+src/
+├── App.js
+├── index.js
+├── assets/
+│   ├── css/
+│   │   └── main.css
+│   └── icons/
+│       ├── chat.png
+│       ├── money.png
+│       └── security.png
+├── components/
+│   ├── Footer.js
+│   ├── Header.js
+│   └── HomeFeature.js
+├── pages/
+│   ├── Error404.js
+│   ├── Home.js
+│   ├── Profile.js
+│   └── SignIn.js
+└── store/
+    ├── store.js
+    └── user.js
+
+je suis au projet 11 OPENCLASSROOM qui est argentBank j'en suis à l'étape 2 mettez en place le state global avec Redux et la connexion de l'utilisateur Avant de démarrer cette étape, je dois avoir : intégré le contenu des différentes pages avec React et React Router. Une fois cette étape terminée, je devrais avoir : la gestion de la connexion utilisateur fonctionnelle dans mon application, et les premiers éléments présents dans le store de Redux.
+
+je copie le html dans les sections concernés dans les composants 
+hero et footer session qui me meanque et faire pareil que dans HomeFeatured
+
+SiGIn partie main
+pROCHAINE PAGE CONNEXION ET USER

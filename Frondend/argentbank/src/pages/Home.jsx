@@ -13,15 +13,17 @@ function Home() {
   return (
     <main>
       {/* Hero Section */}
-      <div className="hero" style={{ backgroundColor: "#2c3e50", padding: "60px 20px", color: "#fff", textAlign: "center" }}>
-        <section className="hero-content">
-          <h2 className="sr-only">Promoted Content</h2>
-          <p className="subtitle" style={{ fontSize: "1.2rem", margin: "10px 0" }}>No fees.</p>
-          <p className="subtitle" style={{ fontSize: "1.2rem", margin: "10px 0" }}>No minimum deposit.</p>
-          <p className="subtitle" style={{ fontSize: "1.2rem", margin: "10px 0" }}>High interest rates.</p>
-          <p className="text" style={{ fontSize: "1rem", marginTop: "20px" }}>Open a savings account with Argent Bank today!</p>
+        // faire un composants
+       <div class="hero">
+        <section class="hero-content">
+          <h2 class="sr-only">Promoted Content</h2>
+          <p class="subtitle">No fees.</p>
+          <p class="subtitle">No minimum deposit.</p>
+          <p class="subtitle">High interest rates.</p>
+          <p class="text">Open a savings account with Argent Bank today!</p>
         </section>
       </div>
+      
 
       {/* Features Section */}
       <section className="features" style={{ display: "flex", justifyContent: "space-around", flexWrap: "wrap", marginTop: "40px" }}>
