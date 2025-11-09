@@ -1,7 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
-import userReducer from "./user"; // ton reducer user
+import userReducer from "./user";
 
-// Création du store Redux avec seulement le userReducer pour l'instant
 const store = configureStore({
   reducer: {
     user: userReducer,
@@ -9,3 +8,4 @@ const store = configureStore({
 });
 
 export default store;
+
