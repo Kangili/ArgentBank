@@ -1,14 +1,26 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
-// Simule une API de login
+// Appel réel à l'API pour le login
 export const loginUser = createAsyncThunk(
   "user/login",
   async ({ email, password }) => {
-    // Ici tu peux appeler une vraie API
-    if (email === "test@test.com" && password === "123456") {
-      return { token: "fake-jwt-token", name: "Tony Jarvis", email };
-    } else {
-      throw new Error("Invalid email or password");
+    try {
+      const response = await axios.post("http://localhost:3001/api/v1/user/login", {
+        email,
+        password,
+      });
+
+      // On récupère le token et les infos utilisateur
+      const { token } = response.data.body;
+      
+      // Optionnel : on peut aussi récupérer d'autres infos si besoin
+      // const userInfo = { firstName, lastName, email, ... }
+
+      return { token, email };
+    } catch (error) {
+      // Message d'erreur de l'API ou message générique
+      throw new Error(error.response?.data?.message || "Invalid email or password");
     }
   }
 );
@@ -38,7 +50,7 @@ const userSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
         state.token = action.payload.token;
-        state.userInfo = { name: action.payload.name, email: action.payload.email };
+        state.userInfo = { email: action.payload.email };
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
