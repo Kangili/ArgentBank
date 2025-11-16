@@ -12,12 +12,10 @@ export const loginUser = createAsyncThunk(
       });
 
       // On récupère le token et les infos utilisateur
-      const { token } = response.data.body;
-      
-      // Optionnel : on peut aussi récupérer d'autres infos si besoin
-      // const userInfo = { firstName, lastName, email, ... }
+      // MODIF : récupération du firstName et lastName pour l'affichage dans Profile
+      const { token, firstName, lastName } = response.data.body;
 
-      return { token, email };
+      return { token, firstName, lastName, email };
     } catch (error) {
       // Message d'erreur de l'API ou message générique
       throw new Error(error.response?.data?.message || "Invalid email or password");
@@ -50,7 +48,11 @@ const userSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
         state.token = action.payload.token;
-        state.userInfo = { email: action.payload.email };
+        // MODIF : création de userInfo.name pour affichage dans Header/Profile
+        state.userInfo = {
+          name: action.payload.firstName + " " + action.payload.lastName,
+          email: action.payload.email,
+        };
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
@@ -61,4 +63,5 @@ const userSlice = createSlice({
 
 export const { logout } = userSlice.actions;
 export default userSlice.reducer;
+
 

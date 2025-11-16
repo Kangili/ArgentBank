@@ -1,23 +1,17 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../store/user";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function Profile() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { token, userInfo } = useSelector((state) => state.user);
+  const { userInfo } = useSelector((state) => state.user); // On n'a plus besoin de token ici, PrivateRoute s'en charge
 
-  // Redirection vers SignIn si non connecté
-  if (!token) {
-    navigate("/signin");
-    return null;
-  }
-
+  // Exemple de comptes
   const accounts = [
-    { title: "Argent Bank Checking (x8349)", amount: "$2,082.79", description: "Available Balance" },
-    { title: "Argent Bank Savings (x6712)", amount: "$10,928.42", description: "Available Balance" },
-    { title: "Argent Bank Credit Card (x8349)", amount: "$184.30", description: "Current Balance" },
+    { title: "Argent Bank Checking (x3448)", amount: "$48,098.43", description: "Available Balance" },
+    { title: "Argent Bank Checking (x6712)", amount: "$48,098.43", description: "Available Balance" },
+    { title: "Argent Bank Checking (x8349)", amount: "$48,098.43", description: "Current Balance" },
   ];
 
   return (
@@ -28,7 +22,7 @@ function Profile() {
           <h1 className="sr-only">Argent Bank</h1>
         </Link>
         <div>
-          <span className="main-nav-item">{userInfo.name}</span>
+          <span className="main-nav-item">{userInfo.email}</span> {/* <- MODIF: affichage email */}
           <button
             className="main-nav-item"
             onClick={() => dispatch(logout())}
@@ -45,7 +39,7 @@ function Profile() {
           <h1>
             Welcome back
             <br />
-            {userInfo.name}!
+            {userInfo.email}!
           </h1>
         </div>
 
@@ -72,6 +66,8 @@ function Profile() {
 }
 
 export default Profile;
+
+
 
 
 

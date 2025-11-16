@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../store/user";
+import { useNavigate } from "react-router-dom"; // MODIF : import pour redirection après login
 
 function SignIn() {
   const dispatch = useDispatch();
@@ -10,11 +11,14 @@ function SignIn() {
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
 
+  const navigate = useNavigate(); // MODIF : hook pour navigation
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await dispatch(loginUser({ email: username, password })).unwrap();
       alert("Connexion réussie !");
+      navigate("/profile"); // MODIF : redirection vers Profile après login
     } catch (err) {
       console.error(err);
     }
@@ -64,6 +68,9 @@ function SignIn() {
 }
 
 export default SignIn;
+
+
+
 
 
 
