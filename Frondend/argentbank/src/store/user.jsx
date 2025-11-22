@@ -1,7 +1,8 @@
+// src/store/user.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-// Appel réel à l'API pour le login
+// 🔥 LOGIN : récupère token + infos utilisateur
 export const loginUser = createAsyncThunk(
   "user/login",
   async ({ email, password }) => {
@@ -11,13 +12,31 @@ export const loginUser = createAsyncThunk(
         password,
       });
 
-      // On récupère les infos renvoyées par l'API
       const { token, firstName, lastName, userName } = response.data.body;
 
       return { token, firstName, lastName, userName, email };
     } catch (error) {
       throw new Error(error.response?.data?.message || "Invalid email or password");
     }
+  }
+);
+
+// 🔥 PROFILE : fetch via GET (corrige le 404)
+export const fetchUserProfile = createAsyncThunk(
+  "user/profile",
+  async (_, { getState }) => {
+    const token = getState().user.token;
+
+    const response = await axios.get(
+      "http://localhost:3001/api/v1/user/profile", // GET ici
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response.data.body; // { firstName, lastName, userName }
   }
 );
 
@@ -46,24 +65,30 @@ const userSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
         state.token = action.payload.token;
-
-        // 🔥 CORRECTION : on stocke chaque valeur séparément
         state.userInfo = {
           firstName: action.payload.firstName,
           lastName: action.payload.lastName,
-          userName: action.payload.userName || "", // peut être vide au début
+          userName: action.payload.userName || "",
           email: action.payload.email,
         };
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
+      })
+      .addCase(fetchUserProfile.fulfilled, (state, action) => {
+        state.userInfo = action.payload;
       });
   },
 });
 
 export const { logout } = userSlice.actions;
 export default userSlice.reducer;
+
+
+
+
+
 
 
 

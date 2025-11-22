@@ -1,128 +1,85 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import '../assets/css/main.css';
+/// src/pages/Profile.jsx
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { logout, fetchUserProfile } from "../store/user";
+import { useNavigate } from "react-router-dom";
 
 function Profile() {
-  const { userInfo } = useSelector((state) => state.user);
-// affichage connexion avec Tony 
-  const [userName, setUserName] = useState("Ben_hg");
-  const [lastName] = useState("Hong");
-  const [isEditing, setIsEditing] = useState(true);
-console.log (userInfo)
-  const accounts = [
-    { 
-      title: "Argent Bank Checking (x3448)", 
-      amount: "$2,082.79", 
-      description: "Available Balance" 
-      // ⭐ À MODIFIER : les valeurs et le texte doivent être harmonisés avec la maquette (48,098.43 / available balance)
-    },
-    { 
-      title: "Argent Bank Savings (x6712)", 
-      amount: "$10,928.42", 
-      description: "Available Balance" 
-      // ⭐ Dans la maquette, les 3 comptes affichent la même structure (titre + 48,098.43)
-    },
-    { 
-      title: "Argent Bank Credit Card (x8349)", 
-      amount: "$184.30", 
-      description: "Current Balance" 
-      // ⭐ Le design maquette utilise des cartes uniformisées : même couleur noir, même typo
-    },
-  ];
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { token, userInfo } = useSelector((state) => state.user);
 
-  const handleSave = () => {
-    alert("Nom mis à jour (simulation). API update à faire ensuite.");
-    setIsEditing(false);
+  // 🔥 On récupère le profil depuis l'API si le token existe
+  useEffect(() => {
+    if (token && !userInfo) {
+      dispatch(fetchUserProfile())
+        .unwrap()
+        .catch((err) => console.error("Erreur fetch profil :", err));
+    }
+  }, [dispatch, token, userInfo]);
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/signin");
   };
 
+  if (!userInfo) {
+    return <p>Chargement du profil...</p>;
+  }
+
   return (
-    <>
-      {/* Navigation simplifiée */}
-      <nav className="main-nav">
-        <Link className="main-nav-logo" to="/">
-          <h1 className="sr-only">Argent Bank</h1>
-        </Link>
-      </nav>
+    <main className="main bg-dark">
+      <div className="header">
+        <h1>
+          Welcome back
+          <br />
+          {userInfo.firstName} {userInfo.lastName}!
+        </h1>
+        <button onClick={handleLogout} className="edit-button">
+          Edit Name
+        </button>
+      </div>
 
-      {/* Main */}
-      <main className="main bg-dark">
-        {/* ⭐ À MODIFIER : bg-dark doit devenir bg-light (fond blanc) pour coller au design */}
-        <div className="header">
-          <h1 className="edit-color">Welcome Back</h1>
-          {/* ⭐ Dans la maquette : "Edit user info" (tout en minuscules sauf Edit) */}
-
-          <div className="edit-user-box">
-            {/* ⭐ La structure est bonne, il faut juste ajuster le style CSS pour ressembler à la maquette */}
-
-            <label>User Name:</label>
-            {/* ⭐ Dans la maquette : "User name:" (casse différente) */}
-            <input
-              type="text"
-              value={userName}
-              onChange={(e) => setUserName(e.target.value)}
-              disabled={!isEditing}
-            />
-
-            <label>First Name:</label>
-            {/* ⭐ Dans la maquette : "First name:" */}
-            <input
-              type="text"
-              value={userInfo.fisrtName}
-              disabled
-            />
-
-            <label>Last Name:</label>
-            {/* ⭐ Dans la maquette : "Last name:" */}
-            <input
-              type="text"
-              value={lastName}
-              disabled
-            />
-
-            <div className="edit-btns">
-              {isEditing ? (
-                <>
-                  {/* ⭐ Bouton OK mais couleur, largeur et font doivent matcher la maquette */}
-                  <button className="edit-button" onClick={handleSave}>Save</button>
-                  <button className="edit-button" onClick={() => setIsEditing(false)}>Cancel</button>
-                </>
-              ) : (
-                <button className="edit-button" onClick={() => setIsEditing(true)}>Edit</button>
-              )}
-            </div>
-          </div>
+      <h2 className="sr-only">Accounts</h2>
+      <section className="account">
+        <div className="account-content-wrapper">
+          <h3 className="account-title">Argent Bank Checking (x8349)</h3>
+          <p className="account-amount">$2,082.79</p>
+          <p className="account-amount-description">Available Balance</p>
         </div>
+        <div className="account-content-wrapper cta">
+          <button className="transaction-button">View transactions</button>
+        </div>
+      </section>
 
-        {/* Accounts */}
-        {accounts.map((account, index) => (
-          <section className="account" key={index}>
-            {/* ⭐ Cette section doit être transformée en "carte noire" 
-                → arrière-plan #2c2c2c
-                → texte blanc
-                → montant en grand (32px)
-                → flèche à droite (">") 
-                comme sur la maquette
-            */}
+      <section className="account">
+        <div className="account-content-wrapper">
+          <h3 className="account-title">Argent Bank Savings (x6712)</h3>
+          <p className="account-amount">$10,928.42</p>
+          <p className="account-amount-description">Available Balance</p>
+        </div>
+        <div className="account-content-wrapper cta">
+          <button className="transaction-button">View transactions</button>
+        </div>
+      </section>
 
-            <div className="account-content-wrapper">
-              <h3 className="account-title">{account.title}</h3>
-              <p className="account-amount">{account.amount}</p>
-              <p className="account-amount-description">{account.description}</p>
-            </div>
-
-            <div className="account-content-wrapper cta">
-              {/* ⭐ À MODIFIER : remplacer ce bouton par une flèche ">" style maquette */}
-              <button className="transaction-button">View transactions</button>
-            </div>
-          </section>
-        ))}
-      </main>
-    </>
+      <section className="account">
+        <div className="account-content-wrapper">
+          <h3 className="account-title">Argent Bank Credit Card (x8349)</h3>
+          <p className="account-amount">$184.30</p>
+          <p className="account-amount-description">Current Balance</p>
+        </div>
+        <div className="account-content-wrapper cta">
+          <button className="transaction-button">View transactions</button>
+        </div>
+      </section>
+    </main>
   );
 }
 
 export default Profile;
+
+
 
 
 

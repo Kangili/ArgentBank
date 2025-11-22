@@ -1,26 +1,36 @@
+// src/pages/SignIn.jsx
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../store/user";
-import { useNavigate } from "react-router-dom"; // MODIF : import pour redirection après login
+import { loginUser, fetchUserProfile } from "../store/user";
+import { useNavigate } from "react-router-dom";
 
 function SignIn() {
   const dispatch = useDispatch();
-  const { loading, error } = useSelector((state) => state.user);
+  const { loading, error, userInfo } = useSelector((state) => state.user);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
 
-  const navigate = useNavigate(); // MODIF : hook pour navigation
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await dispatch(loginUser({ email: username, password })).unwrap();
-      alert("Connexion réussie !");
-      navigate("/profile"); // MODIF : redirection vers Profile après login
+      // Login
+      const loginResult = await dispatch(loginUser({ email: username, password })).unwrap();
+      console.log("Login réussi :", loginResult);
+
+      // Fetch profil
+      const profileResult = await dispatch(fetchUserProfile()).unwrap();
+      console.log("Profil récupéré :", profileResult);
+
+      console.log("État du store après login :", { userInfo });
+
+      // Redirection vers Profile
+      navigate("/profile");
     } catch (err) {
-      console.error(err);
+      console.error("Erreur login/fetch profil :", err);
     }
   };
 
@@ -68,6 +78,11 @@ function SignIn() {
 }
 
 export default SignIn;
+
+
+
+
+
 
 
 
