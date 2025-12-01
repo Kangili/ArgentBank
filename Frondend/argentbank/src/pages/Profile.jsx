@@ -1,7 +1,6 @@
-/// src/pages/Profile.jsx
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { logout, fetchUserProfile } from "../store/user";
+import { fetchUserProfile, logout, updateUsername } from "../store/user";
 import { useNavigate } from "react-router-dom";
 
 function Profile() {
@@ -18,9 +17,31 @@ function Profile() {
     }
   }, [dispatch, token, userInfo]);
 
+  // ✅ État local pour gérer l'affichage du formulaire d'édition
+  const [isEditing, setIsEditing] = useState(false);
+
+  // ✅ États pour User Name
+  const [username, setUsername] = useState(userInfo?.userName || "");
+
   const handleLogout = () => {
     dispatch(logout());
-    navigate("/signin");
+    navigate("/sign-in");
+  };
+
+  // 🔹 handleSave : sauvegarde du username via l'API + Redux
+  const handleSave = () => {
+    if (!username) return; // éviter d'envoyer vide
+
+    dispatch(updateUsername(username))
+      .unwrap()
+      .then(() => {
+        console.log("Username mis à jour !");
+        setIsEditing(false);
+      })
+      .catch((err) => {
+        console.error("Erreur mise à jour username :", err);
+        alert("Impossible de mettre à jour le username.");
+      });
   };
 
   if (!userInfo) {
@@ -35,12 +56,67 @@ function Profile() {
           <br />
           {userInfo.firstName} {userInfo.lastName}!
         </h1>
-        <button onClick={handleLogout} className="edit-button">
-          Edit Name
-        </button>
+
+        {/* 🔽 Affichage conditionnel : bouton OU formulaire */}
+        {!isEditing ? (
+          // --- MODE NON-ÉDITION ---
+          <button onClick={() => setIsEditing(true)} className="edit-button">
+            Edit Name
+          </button>
+        ) : (
+          // --- MODE ÉDITION ---
+          <div className="edit-user-box">
+            <div className="edit-field">
+              <label htmlFor="username">User Name:</label>
+              <input
+                id="username"
+                type="text"
+                className="user-name-input"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </div>
+
+            <div className="edit-field">
+              <label htmlFor="firstName">First Name:</label>
+              <input
+                id="firstName"
+                type="text"
+                className="grayed-input"
+                value={userInfo.firstName}
+                readOnly
+              />
+            </div>
+
+            <div className="edit-field">
+              <label htmlFor="lastName">Last Name:</label>
+              <input
+                id="lastName"
+                type="text"
+                className="grayed-input"
+                value={userInfo.lastName}
+                readOnly
+              />
+            </div>
+
+            <div className="edit-btns">
+              <button className="edit-button" onClick={handleSave}>
+                Save
+              </button>
+              <button
+                className="cancel-button"
+                onClick={() => setIsEditing(false)}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       <h2 className="sr-only">Accounts</h2>
+
+      {/* --- Tes sections de comptes (inchangées) --- */}
       <section className="account">
         <div className="account-content-wrapper">
           <h3 className="account-title">Argent Bank Checking (x8349)</h3>
@@ -78,6 +154,12 @@ function Profile() {
 }
 
 export default Profile;
+
+
+
+
+
+
 
 
 

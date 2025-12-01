@@ -298,30 +298,47 @@ body {
 .header {
   text-align: center;
   margin-bottom: 40px;
-   color: #2c2c2c; /* texte gris foncé */
+  color: white; /* texte blanc comme sur maquette */
 }
 
 .edit-user-box {
   margin: 20px auto;
-  background: white;
-  padding: 20px;
-  width: 300px;
-  border-radius: 5px;
+  width: 400px; /* largeur fixe pour alignement */
+  background: transparent; /* pas de fond blanc autour */
+  color: white; /* texte blanc dans labels */
 }
 
-.edit-user-box label {
-  display: block;
-  text-align: left;
-  margin-bottom: 5px;
+.edit-field {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.edit-field label {
+  width: 120px; /* largeur fixe pour alignement */
   font-weight: 500;
-  color: #2c2c2c; /* labels gris foncé */
+  color: white; /* labels en blanc */
 }
 
-.edit-user-box input {
-  width: 100%;
+/* Inputs généraux */
+.edit-field input {
+  flex: 1;
   padding: 8px;
-  margin-bottom: 12px;
+  border: 1px solid #ccc;
   border-radius: 4px;
+  font-size: 1rem;
+}
+
+/* User Name : fond blanc, texte noir */
+.user-name-input {
+  background-color: #fff;
+  color: #000;
+}
+
+/* First Name & Last Name : fond gris clair et texte gris */
+.grayed-input {
+  background-color: #e0e0e0; /* gris clair */
+  color: #6c6c6c; /* texte gris */
   border: 1px solid #ccc;
 }
 
@@ -332,19 +349,31 @@ body {
   gap: 10px;
 }
 
-.edit-button {
+/* Style commun aux deux boutons */
+.edit-button,
+.cancel-button {
   background-color: #00bc77;
   color: white;
   border: none;
   padding: 10px 25px;
   border-radius: 4px;
   cursor: pointer;
+  min-width: 80px;
+  font-size: 1rem;
+  transition: opacity 0.2s;
 }
 
-.edit-button:hover {
+.edit-button:hover,
+.cancel-button:hover {
   opacity: 0.9;
 }
 
-.edit-color{
+.edit-color {
   color: #fff;
 }
+
+
+
+
+
+

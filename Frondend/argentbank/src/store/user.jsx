@@ -1,4 +1,3 @@
-// src/store/user.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -28,7 +27,7 @@ export const fetchUserProfile = createAsyncThunk(
     const token = getState().user.token;
 
     const response = await axios.get(
-      "http://localhost:3001/api/v1/user/profile", // GET ici
+      "http://localhost:3001/api/v1/user/profile",
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -37,6 +36,31 @@ export const fetchUserProfile = createAsyncThunk(
     );
 
     return response.data.body; // { firstName, lastName, userName }
+  }
+);
+
+// 🔥 UPDATE USERNAME : PUT pour mettre à jour le username
+export const updateUsername = createAsyncThunk(
+  "user/updateUsername",
+  async (newUsername, { getState, rejectWithValue }) => {
+    const token = getState().user.token;
+
+    try {
+      const response = await axios.put(
+        "http://localhost:3001/api/v1/user/profile",
+        { userName: newUsername },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      return response.data.body; // { firstName, lastName, userName }
+    } catch (err) {
+      console.error("Erreur updateUsername:", err);
+      return rejectWithValue(err.response?.data || err.message);
+    }
   }
 );
 
@@ -55,9 +79,18 @@ const userSlice = createSlice({
       state.error = null;
       state.loading = false;
     },
+    // --- Ajout de l'action updateUserName (utile si besoin de modification locale) ---
+    updateUserName: (state, action) => {
+      const { firstName, lastName } = action.payload;
+      if (state.userInfo) {
+        state.userInfo.firstName = firstName;
+        state.userInfo.lastName = lastName;
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
+      // LOGIN
       .addCase(loginUser.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -76,14 +109,28 @@ const userSlice = createSlice({
         state.loading = false;
         state.error = action.error.message;
       })
+
+      // FETCH PROFILE
       .addCase(fetchUserProfile.fulfilled, (state, action) => {
         state.userInfo = action.payload;
+      })
+
+      // 🔹 UPDATE USERNAME
+      .addCase(updateUsername.fulfilled, (state, action) => {
+        if (state.userInfo) {
+          state.userInfo.userName = action.payload.userName;
+        }
+      })
+      .addCase(updateUsername.rejected, (state, action) => {
+        state.error = action.payload || "Erreur lors de la mise à jour du username";
       });
   },
 });
 
-export const { logout } = userSlice.actions;
+export const { logout, updateUserName } = userSlice.actions;
+
 export default userSlice.reducer;
+
 
 
 
