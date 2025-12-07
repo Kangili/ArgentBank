@@ -1,7 +1,14 @@
-import React from 'react';
-import { Link } from 'react-router-dom';  // <-- importer Link
+import React from "react";
+import { useSelector } from "react-redux";
+import { Link, useLocation } from "react-router-dom";
 
 function Header() {
+  const location = useLocation();
+  const {user} = useSelector ((state) => state.userInfo); // remplace par le vrai nom de l'utilisateur connecté UTILISER USERSALECTOR
+
+  // on affiche Sign In uniquement sur / et /sign-in
+  const isAuthPage = location.pathname === "/" || location.pathname === "/sign-in";
+
   return (
     <header>
       <nav className="main-nav">
@@ -13,18 +20,28 @@ function Header() {
           />
           <h1 className="sr-only">Argent Bank</h1>
         </Link>
-        <div>
-          <Link className="main-nav-item" to="/sign-in">
+
+        {isAuthPage ? (
+          <div>
+            <Link className="main-nav-item" to="/sign-in">
+              <i className="fa fa-user-circle"></i>
+              Sign In
+            </Link>
+          </div>
+        ) : (
+          <div className="main-nav-user">
             <i className="fa fa-user-circle"></i>
-            Sign In
-          </Link>
-        </div>
+            <span className="main-nav-username">{user.username}</span>
+            <button className="main-nav-signout">Sign Out</button>
+          </div>
+        )}
       </nav>
     </header>
   );
 }
 
 export default Header;
+
 
 
 

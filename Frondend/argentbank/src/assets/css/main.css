@@ -372,6 +372,54 @@ body {
   color: #fff;
 }
 
+/* ============================
+   HEADER / NAVIGATION
+   ============================ */
+.main-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background-color: transparent; /* pas de couleur de fond */
+}
+
+/* Logo ArgentBank */
+.main-nav-logo-image {
+  width: 150px; /* ajuster selon ton logo */
+}
+
+/* Partie utilisateur (en haut à droite) */
+.main-nav-user {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* espace entre icône, nom et bouton */
+  color: #2c3e50; /* couleur du texte de l'utilisateur */
+  font-weight: 500;
+}
+
+.main-nav-user i {
+  font-size: 1.5rem; /* taille de l'icône */
+}
+
+.main-nav-username {
+  font-size: 1rem;
+}
+
+/* Bouton Sign Out */
+.main-nav-signout {
+  background-color: #fff; /* bouton blanc */
+  color: #2c3e50; /* texte du bouton */
+  border: none;
+  padding: 5px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.main-nav-signout:hover {
+  opacity: 0.8;
+}
+
 
 
 
