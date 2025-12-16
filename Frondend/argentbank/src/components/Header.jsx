@@ -1,13 +1,26 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+
+// ⭐ AJOUT : import correct du logout depuis ton store
+import { logout } from "../store/user";
 
 function Header() {
   const location = useLocation();
-  const {user} = useSelector ((state) => state.userInfo); // remplace par le vrai nom de l'utilisateur connecté UTILISER USERSALECTOR
+  const dispatch = useDispatch();   // ⭐ AJOUT
+  const navigate = useNavigate();   // ⭐ AJOUT
+
+  const { userInfo } = useSelector((state) => state.user); 
+  // remplace par le vrai nom de l'utilisateur connecté UTILISER USERSALECTOR
 
   // on affiche Sign In uniquement sur / et /sign-in
   const isAuthPage = location.pathname === "/" || location.pathname === "/sign-in";
+
+  // ⭐ AJOUT : fonction logout qui vide Redux + redirige
+  const handleLogout = () => {
+    dispatch(logout());        // ⭐ AJOUT : envoie au store la déconnexion
+    navigate("/sign-in");      // ⭐ AJOUT : redirection après logout
+  };
 
   return (
     <header>
@@ -31,8 +44,15 @@ function Header() {
         ) : (
           <div className="main-nav-user">
             <i className="fa fa-user-circle"></i>
-            <span className="main-nav-username">{user.username}</span>
-            <button className="main-nav-signout">Sign Out</button>
+
+            {/* ⭐ AJOUT : affichage du username venant du store Redux */}
+            <span className="main-nav-username">{userInfo?.userName}</span>
+
+            {/* ⭐ AJOUT : bouton logout fonctionnel */}
+            <button className="main-nav-signout" onClick={handleLogout}>
+              <i className="fa fa-sign-out"></i>
+              Sign Out
+            </button>
           </div>
         )}
       </nav>
@@ -41,6 +61,7 @@ function Header() {
 }
 
 export default Header;
+
 
 
 
