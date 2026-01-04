@@ -19,7 +19,7 @@ function Header() {
   // ⭐ AJOUT : fonction logout qui vide Redux + redirige
   const handleLogout = () => {
     dispatch(logout());        // ⭐ AJOUT : envoie au store la déconnexion
-    navigate("/sign-in");      // ⭐ AJOUT : redirection après logout
+    navigate("/");      // correction redirection vers accueil 
   };
 
   return (
@@ -28,7 +28,7 @@ function Header() {
         <Link className="main-nav-logo" to="/">
           <img
             className="main-nav-logo-image"
-            src="/argentBankLogo.png"
+            src="/argentBankLogo.webp"
             alt="Argent Bank Logo"
           />
           <h1 className="sr-only">Argent Bank</h1>

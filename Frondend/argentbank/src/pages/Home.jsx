@@ -2,9 +2,9 @@ import React from "react";
 import HomeFeature from "../components/HomeFeature";
 
 // Import des images depuis src/assets/icons
-import iconChat from "../assets/icons/icon-chat.png";
-import iconMoney from "../assets/icons/icon-money.png";
-import iconSecurity from "../assets/icons/icon-security.png";
+import iconChat from "../assets/icons/icon-chat.webp";
+import iconMoney from "../assets/icons/icon-money.webp";
+import iconSecurity from "../assets/icons/icon-security.webp";
 
 /**
  * Page d'accueil Argent Bank
