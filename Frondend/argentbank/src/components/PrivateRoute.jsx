@@ -6,7 +6,7 @@ import { Navigate } from "react-router-dom";
 // Sinon => redirige vers /sign-in
 function PrivateRoute({ children }) {
   const token = useSelector((state) => state.user.token);
-  return token ? children : <Navigate to="/sign-in" />;
+  return token ? children : <Navigate to="/home" />;
 }
 
 export default PrivateRoute;
