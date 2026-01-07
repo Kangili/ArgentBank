@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import logo from "../assets/icons/argentBankLogo.webp";
 
 // ⭐ AJOUT : import correct du logout depuis ton store
 import { logout } from "../store/user";
@@ -28,7 +29,7 @@ function Header() {
         <Link className="main-nav-logo" to="/">
           <img
             className="main-nav-logo-image"
-            src="/argentBankLogo.webp"
+            src={logo}
             alt="Argent Bank Logo"
           />
           <h1 className="sr-only">Argent Bank</h1>
